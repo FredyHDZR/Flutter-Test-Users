@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<SplashCubit, bool>(
       listener: (context, state) {
         if (state) {
-          Navigator.pushReplacementNamed(context, RoutesNames.home);
+          Navigator.pushReplacementNamed(context, RoutesNames.login);
         }
       },
       child: Scaffold(
