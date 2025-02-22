@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/splash_bloc.dart';
+import 'package:flutter_test_users/src/routes/routes_names.dart';
+import 'splash_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -10,7 +11,7 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<SplashCubit, bool>(
       listener: (context, state) {
         if (state) {
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, RoutesNames.home);
         }
       },
       child: const Scaffold(
