@@ -10,22 +10,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeCubit, HomeState>(
-        listener: (context, state) {
-          if (state is HomeLoaded) {
-            print(state.users);
-          }
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.primaryColor,
-            title: const Text(
-              'Users',
-              style: AppFonts.subtitleWhite,
-            ),
-          ),
-          body: body(),
-        ));
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        title: const Text(
+          'Users',
+          style: AppFonts.subtitleWhite,
+        ),
+      ),
+      body: body(),
+    );
   }
 
   Widget body() {
@@ -49,7 +43,7 @@ class HomeScreen extends StatelessWidget {
       }
       return const Center(child: CircularProgressIndicator());
     });
-    
+
     return Container(
         color: AppColors.primaryColor,
         child: Container(
