@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_users/src/routes/routes_names.dart';
 import 'package:flutter_test_users/src/theme/Colors.dart';
-import 'package:flutter_test_users/src/utils/local_storage.dart';
 import 'package:lottie/lottie.dart';
 import 'splash_bloc.dart';
 
@@ -18,12 +17,7 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<SplashCubit, bool>(
       listener: (context, state) async {
         if (state) {
-          var token = await LocalStorage.getToken();
-          if (token != null) {
-            Navigator.pushReplacementNamed(context, RoutesNames.home);
-          } else {
-            Navigator.pushReplacementNamed(context, RoutesNames.login);
-          }
+          Navigator.pushReplacementNamed(context, RoutesNames.login);
         }
       },
       child: Scaffold(
