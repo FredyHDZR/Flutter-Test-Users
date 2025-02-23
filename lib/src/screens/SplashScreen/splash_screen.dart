@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_users/src/routes/routes_names.dart';
 import 'package:flutter_test_users/src/theme/Colors.dart';
+import 'package:flutter_test_users/src/utils/local_storage.dart';
 import 'package:lottie/lottie.dart';
 import 'splash_bloc.dart';
 
@@ -13,9 +16,14 @@ class SplashScreen extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return BlocListener<SplashCubit, bool>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state) {
-          Navigator.pushReplacementNamed(context, RoutesNames.login);
+          var token = await LocalStorage.getToken();
+          if (token != null) {
+            Navigator.pushReplacementNamed(context, RoutesNames.home);
+          } else {
+            Navigator.pushReplacementNamed(context, RoutesNames.login);
+          }
         }
       },
       child: Scaffold(

@@ -1,15 +1,34 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test_users/src/routes/routes_names.dart';
+import 'package:flutter_test_users/src/utils/functions.dart';
+import 'package:flutter_test_users/src/utils/local_storage.dart';
 
 abstract class LoginState {
   static final TextEditingController userController = TextEditingController();
-  static final TextEditingController passwordController = TextEditingController();
+  static final TextEditingController passwordController =
+      TextEditingController();
   bool rememberMe;
-  
-  LoginState({required this.rememberMe});
+  String? userError;
+  String? passwordError;
 
-  LoginState copyWith({bool? rememberMe}) {
-    return LoginInitial()..rememberMe = rememberMe ?? this.rememberMe;
+  LoginState({
+    required this.rememberMe,
+    this.userError,
+    this.passwordError,
+  });
+
+  LoginState copyWith({
+    bool? rememberMe,
+    String? userError,
+    String? passwordError,
+  }) {
+    return LoginInitial()
+      ..rememberMe = rememberMe ?? this.rememberMe
+      ..userError = userError ?? this.userError
+      ..passwordError = passwordError ?? this.passwordError;
   }
 }
 
@@ -31,20 +50,49 @@ class LoginError extends LoginState {
 }
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(LoginInitial());
+  LoginCubit() : super(LoginInitial()) {
+    LocalStorage.saveUser('admin', '123456');
+  }
 
   void toggleRememberMe() {
     emit(state.copyWith(rememberMe: !state.rememberMe));
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(BuildContext context) async {
     try {
       emit(LoginLoading(rememberMe: state.rememberMe));
-      // Aquí tu lógica de login
-      await Future.delayed(const Duration(seconds: 2)); // Simulación de login
-      emit(LoginSuccess(rememberMe: state.rememberMe));
+      var resp = await LocalStorage.getUser(LoginState.userController.text);
+      if (resp != null) {
+        if (resp['password'] == LoginState.passwordController.text) {
+          if (state.rememberMe) {
+            var token = generateRandomToken(32);
+            LocalStorage.loginUser(token);
+          }
+          Navigator.pushReplacementNamed(context, RoutesNames.home);
+        } else {
+          emit(state.copyWith(passwordError: 'Contraseña incorrecta'));
+        }
+      } else {
+        emit(state.copyWith(userError: 'Usuario no encontrado'));
+      }
     } catch (e) {
       emit(LoginError(message: e.toString(), rememberMe: state.rememberMe));
+    }
+  }
+
+  void validateUser(String user) {
+    if (user.isEmpty) {
+      emit(state.copyWith(userError: 'Usuario requerido'));
+    } else {
+      emit(state.copyWith(userError: ''));
+    }
+  }
+
+  void validatePassword(String password) {
+    if (password.isEmpty) {
+      emit(state.copyWith(passwordError: 'Contraseña requerida'));
+    } else {
+      emit(state.copyWith(passwordError: ''));
     }
   }
 }

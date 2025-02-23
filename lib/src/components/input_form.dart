@@ -6,7 +6,9 @@ class InputForm extends StatefulWidget {
   final String label;
   final TextEditingController controller;
   final bool isPassword;
-  const InputForm({super.key, required this.label, required this.controller, this.isPassword = false});
+  final String? errorText;
+  final Function(String) onChanged;
+  const InputForm({super.key, required this.label, required this.controller, this.isPassword = false, this.errorText, required this.onChanged});
 
   @override
   State<InputForm> createState() => _InputFormState();
@@ -22,12 +24,17 @@ class _InputFormState extends State<InputForm> {
   @override
   Widget build(BuildContext context) {
       return TextField(
+        onChanged: widget.onChanged,
         controller: widget.controller,
         obscureText: showPassword,
         decoration: InputDecoration(
+          errorText: widget.errorText != null && widget.errorText!.isNotEmpty ? widget.errorText : null,
           labelText: widget.label,
           contentPadding: const EdgeInsets.symmetric(vertical: 15),
           labelStyle: AppFonts.bodyGray,
+          errorBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+          ),
           focusedBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
           ),

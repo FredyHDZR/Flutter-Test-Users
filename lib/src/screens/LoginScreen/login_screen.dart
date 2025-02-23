@@ -67,21 +67,33 @@ class LoginScreen extends StatelessWidget {
                 child: Text('App',
                     style: AppFonts.titlePrimary.copyWith(
                         color: AppColors.secondaryColor,
-                        decoration: TextDecoration.underline, decorationColor: AppColors.secondaryColor, decorationThickness: 2)),
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColors.secondaryColor,
+                        decorationThickness: 2)),
               )
             ],
           ),
           const SizedBox(height: 32),
-          InputForm(label: 'USER', controller: LoginState.userController),
+          InputForm(
+              label: 'USER',
+              controller: LoginState.userController,
+              onChanged: (value) =>
+                  context.read<LoginCubit>().validateUser(value),
+              errorText: state.userError),
           const SizedBox(height: 5),
           InputForm(
               label: 'PASSWORD',
               controller: LoginState.passwordController,
-              isPassword: true),
+              isPassword: true,
+              onChanged: (value) =>
+                  context.read<LoginCubit>().validatePassword(value),
+              errorText: state.passwordError),
           const SizedBox(height: 20),
           rememberCheckbox,
           const SizedBox(height: 20),
-          MainButton(text: 'LOGIN', onPressed: () {}),
+          MainButton(
+              text: 'LOGIN',
+              onPressed: () => context.read<LoginCubit>().login(context)),
           const Expanded(child: SizedBox()),
           const Text('Don\'t have an account?', style: AppFonts.bodyBold),
           TextButton(
