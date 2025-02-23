@@ -18,11 +18,11 @@ class HomeScreen extends StatelessWidget {
           style: AppFonts.subtitleWhite,
         ),
       ),
-      body: body(),
+      body: body(context),
     );
   }
 
-  Widget body() {
+  Widget body(BuildContext context) {
     var blocBuilder =
         BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
       if (state is HomeLoaded) {
@@ -44,19 +44,50 @@ class HomeScreen extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     });
 
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Container(
+            color: AppColors.primaryColor,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                color: AppColors.secondaryColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
+              child: blocBuilder,
+            )),
+        Positioned(bottom: 30, child: bottomBar(context))
+      ],
+    );
+  }
+
+  Widget bottomBar(BuildContext context) {
+    var widthSize = MediaQuery.of(context).size.width - 200;
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      width: widthSize,
+      decoration: const BoxDecoration(
         color: AppColors.primaryColor,
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-          ),
-          child: blocBuilder,
-        ));
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.home,
+                  color: AppColors.secondaryColor, size: 32)),
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.person,
+                  color: AppColors.secondaryColor, size: 32)),
+        ],
+      ),
+    );
   }
 }

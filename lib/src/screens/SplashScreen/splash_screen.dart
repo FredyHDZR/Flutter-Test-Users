@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_users/src/routes/routes_names.dart';
@@ -13,9 +15,9 @@ class SplashScreen extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return BlocListener<SplashCubit, bool>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state) {
-          Navigator.pushReplacementNamed(context, RoutesNames.home);
+          Navigator.pushReplacementNamed(context, RoutesNames.login);
         }
       },
       child: Scaffold(

@@ -18,6 +18,16 @@ class AppFonts {
     color: AppColors.white,
   );
 
+  static const TextStyle titlePrimary = TextStyle(
+    fontFamily: fontFamily,
+    decoration: TextDecoration.overline,
+    decorationColor: AppColors.primaryColor,
+    decorationThickness: 2,
+    fontSize: 32,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primaryColor,
+  );
+
   static const TextStyle subtitle = TextStyle(
     fontFamily: fontFamily,
     fontSize: 18,
