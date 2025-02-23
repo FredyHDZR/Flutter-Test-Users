@@ -11,6 +11,8 @@ class HomeLoaded extends HomeState {
   HomeLoaded({required this.users});
 }
 
+class HomeLoading extends HomeState {}
+
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial()) {
     getUsers();
@@ -19,7 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
   UserService userService = UserService();
 
   Future<void> getUsers() async {
-    print('getUsers');
+    emit(HomeLoading());
     var users = await userService.getUsers();
     emit(HomeLoaded(users: users));
   }

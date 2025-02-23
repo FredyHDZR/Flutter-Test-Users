@@ -11,6 +11,8 @@ class Address {
     return Address(json['street'], json['city'], json['zipcode'], json['suite'],
         Geo.fromJson(json['geo']));
   }
+
+  String get fullAddress => '$street, $suite, $city, $zipcode';
 }
 
 class Geo {

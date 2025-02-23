@@ -38,7 +38,12 @@ class HomeScreen extends StatelessWidget {
 
         return Padding(
           padding: const EdgeInsets.fromLTRB(12, 16, 12, 0),
-          child: listView,
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await context.read<HomeCubit>().getUsers();
+            },
+            child: listView,
+          ),
         );
       }
       return const Center(child: CircularProgressIndicator());
