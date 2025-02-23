@@ -14,6 +14,18 @@ class LocalStorage {
     return userJson != null ? jsonDecode(userJson) : userJson;
   }
 
+  static Future<void> saveUserPersistant(String user, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+        'userP', jsonEncode({'user': user, 'password': password}));
+  } 
+
+  static Future<Map<String, dynamic>?> getUserPersistant() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userJson = prefs.getString('userP');
+    return userJson != null ? jsonDecode(userJson) : userJson;
+  }
+
   static Future<void> loginUser(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);

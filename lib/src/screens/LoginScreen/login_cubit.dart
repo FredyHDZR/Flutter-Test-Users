@@ -52,6 +52,15 @@ class LoginError extends LoginState {
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial()) {
     LocalStorage.saveUser('admin', '123456');
+    getUserPersistant();
+  }
+
+  Future<void> getUserPersistant() async {
+    var userPersistant = await LocalStorage.getUserPersistant();
+    if (userPersistant != null) {
+      LoginState.userController.text = userPersistant['user'];
+      LoginState.passwordController.text = userPersistant['password'];
+    }
   }
 
   void toggleRememberMe() {
@@ -65,9 +74,11 @@ class LoginCubit extends Cubit<LoginState> {
       if (resp != null) {
         if (resp['password'] == LoginState.passwordController.text) {
           if (state.rememberMe) {
-            var token = generateRandomToken(32);
-            LocalStorage.loginUser(token);
+            LocalStorage.saveUserPersistant(LoginState.userController.text,
+                LoginState.passwordController.text);
           }
+          var token = generateRandomToken(32);
+          LocalStorage.loginUser(token);
           Navigator.pushReplacementNamed(context, RoutesNames.home);
         } else {
           emit(state.copyWith(passwordError: 'Contraseña incorrecta'));
