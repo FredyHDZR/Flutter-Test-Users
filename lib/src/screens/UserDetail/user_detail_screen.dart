@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_users/src/components/section_profile_container.dart';
 import 'package:flutter_test_users/src/models/user_model.dart';
 import 'package:flutter_test_users/src/screens/UserDetail/user_detail_cubit.dart';
-import 'package:flutter_test_users/src/theme/Colors.dart';
+import 'package:flutter_test_users/src/theme/colors.dart';
 import 'package:flutter_test_users/src/theme/fonts.dart';
 
 class UserDetailScreen extends StatelessWidget {

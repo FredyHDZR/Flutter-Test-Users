@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
-  static Future<void> saveUser(String user, String password) async {
+  static Future<bool> saveUser(String user, String password) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
+    return await prefs.setString(
         'user$user', jsonEncode({'user': user, 'password': password}));
   }
 
@@ -24,6 +24,11 @@ class LocalStorage {
     final prefs = await SharedPreferences.getInstance();
     final userJson = prefs.getString('userP');
     return userJson != null ? jsonDecode(userJson) : userJson;
+  }
+
+  static Future<void> deleteUserPersistant() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userP');
   }
 
   static Future<void> loginUser(String token) async {

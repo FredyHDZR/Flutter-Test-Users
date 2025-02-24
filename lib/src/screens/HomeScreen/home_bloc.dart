@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_users/src/models/user_model.dart';
+import 'package:flutter_test_users/src/routes/routes_names.dart';
 import 'package:flutter_test_users/src/services/user_service.dart';
+import 'package:flutter_test_users/src/utils/local_storage.dart';
 
 abstract class HomeState {}
 
@@ -24,5 +27,10 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoading());
     var users = await userService.getUsers();
     emit(HomeLoaded(users: users));
+  }
+
+  void logout(BuildContext context) {
+    LocalStorage.logoutUser();
+    Navigator.pushReplacementNamed(context, RoutesNames.login);
   }
 }

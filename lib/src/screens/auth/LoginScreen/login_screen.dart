@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_users/src/components/input_form.dart';
 import 'package:flutter_test_users/src/components/main_button.dart';
-import 'package:flutter_test_users/src/screens/LoginScreen/login_cubit.dart';
-import 'package:flutter_test_users/src/theme/Colors.dart';
+import 'package:flutter_test_users/src/routes/routes_names.dart';
+import 'package:flutter_test_users/src/screens/auth/LoginScreen/login_cubit.dart';
+import 'package:flutter_test_users/src/theme/colors.dart';
 import 'package:flutter_test_users/src/theme/fonts.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -15,9 +16,12 @@ class LoginScreen extends StatelessWidget {
       color: AppColors.secondaryColor,
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: true,
           backgroundColor: AppColors.secondaryColor,
           appBar: AppBar(
             backgroundColor: AppColors.secondaryColor,
+            elevation: 0,
+            scrolledUnderElevation: 0
           ),
           body: body(),
         ),
@@ -48,8 +52,8 @@ class LoginScreen extends StatelessWidget {
             ],
           ));
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      return ListView(
+        //crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,13 +97,20 @@ class LoginScreen extends StatelessWidget {
           const SizedBox(height: 20),
           MainButton(
               text: 'LOGIN',
+              enabled: state.enabledButton,
               onPressed: () => context.read<LoginCubit>().login(context)),
-          const Expanded(child: SizedBox()),
-          const Text('Don\'t have an account?', style: AppFonts.bodyBold),
-          TextButton(
-              onPressed: () {},
-              child: Text('Create an account',
-                  style: AppFonts.body.copyWith(color: AppColors.green)))
+          const SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text('Don\'t have an account?', style: AppFonts.bodyBold),
+              TextButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, RoutesNames.createAccount),
+                  child: Text('Create an account',
+                      style: AppFonts.body.copyWith(color: AppColors.green))),
+            ],
+          )
         ],
       );
     });
