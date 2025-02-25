@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_users/src/theme/Colors.dart';
+import 'package:flutter_test_users/src/theme/colors.dart';
 
 class AppFonts {
   static const String fontFamily = 'monospace';

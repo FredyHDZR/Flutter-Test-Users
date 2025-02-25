@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_test_users/src/routes/routes_names.dart';
-import 'package:flutter_test_users/src/theme/Colors.dart';
+import 'package:flutter_test_users/src/screens/auth/LoginScreen/login_cubit.dart';
+import 'package:flutter_test_users/src/screens/auth/LoginScreen/login_screen.dart';
+import 'package:flutter_test_users/src/theme/colors.dart';
 import 'package:lottie/lottie.dart';
 import 'splash_bloc.dart';
 
@@ -17,7 +18,29 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<SplashCubit, bool>(
       listener: (context, state) async {
         if (state) {
-          Navigator.pushReplacementNamed(context, RoutesNames.login);
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 500),
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  BlocProvider(
+                      create: (context) => LoginCubit(),
+                      child: const LoginScreen()),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                var begin = const Offset(0.0, 1.0);
+                var end = Offset.zero;
+                var curve = Curves.easeInOut;
+                var tween = Tween(begin: begin, end: end).chain(
+                  CurveTween(curve: curve),
+                );
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              },
+            ),
+          );
         }
       },
       child: Scaffold(
