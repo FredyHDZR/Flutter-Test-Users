@@ -53,7 +53,6 @@ class LoginScreen extends StatelessWidget {
           ));
 
       return ListView(
-        //crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,

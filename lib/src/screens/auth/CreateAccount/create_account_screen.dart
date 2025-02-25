@@ -40,7 +40,7 @@ class CreateAccountScreen extends StatelessWidget {
   Widget body() {
     var blocBuilder = BlocBuilder<CreateAccountCubit, CreateAccountState>(
         builder: (context, state) {
-      return Column(
+      return ListView(
         children: [
           InputForm(
               label: 'USER',
@@ -65,10 +65,11 @@ class CreateAccountScreen extends StatelessWidget {
                   .read<CreateAccountCubit>()
                   .validateConfirmPassword(value),
               errorText: state.confirmPasswordError),
-          const Expanded(child: SizedBox()),
+          const SizedBox(height: 20),
           MainButton(
               text: 'CREATE ACCOUNT',
-              onPressed: () => context.read<CreateAccountCubit>().createAccount(context),
+              onPressed: () =>
+                  context.read<CreateAccountCubit>().createAccount(context),
               enabled: state.enabledButton),
         ],
       );
